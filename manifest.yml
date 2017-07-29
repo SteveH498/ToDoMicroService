@@ -8,4 +8,4 @@ applications:
   disk_quota: 256M
 
 services:
-- todo_postgresql
+- todo-postgresql
