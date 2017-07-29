@@ -1,0 +1,11 @@
+---
+applications:
+- name: todo-service
+  instances: 1
+  memory: 512M
+  buildpack: java_buildpack
+  path: .\todo\target\todo-0.0.1-SNAPSHOT.jar
+  disk_quota: 256M
+
+services:
+- todo_postgresql
