@@ -1,7 +1,7 @@
 # ToDoMicroService
 Simple Spring Boot Micro Service for user specific todo lists
 
-1) In order to obtain Authorization Token send User crendentials
+### In order to obtain Authorization Token send User crendentials
 
 localhost:8080/login - POST
 ```
@@ -17,7 +17,7 @@ localhost:8080/login - POST
 }
 ```
 
-2) Read ToDos (Authorization Token has to be included in HTTP Header)
+### Read ToDos (Authorization Token has to be included in HTTP Header)
 
 localhost:8080/todo/api/v1/todos - GET
 
@@ -26,7 +26,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdGV2ZSJ9.Er6MxeZtN_I051Cq
 
 ```
 
-3) Write ToDo(s) (Authorization Token has to be included in HTTP Header)
+### Write ToDo(s) (Authorization Token has to be included in HTTP Header)
 
 localhost:8080/todo/api/v1/todo - POST
 
