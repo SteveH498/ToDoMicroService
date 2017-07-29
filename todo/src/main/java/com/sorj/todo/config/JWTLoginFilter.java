@@ -20,13 +20,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sorj.todo.model.UserLogin;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.sorj.todo.util.JWTTokenService;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	private final Logger log = LoggerFactory.getLogger(JWTLoginFilter.class);
+	
+	JWTTokenService tokenService;
 
 	protected JWTLoginFilter(String httpMethod, String defaultFilterProcessesUrl,
 			AuthenticationManager authenticationManager) {
@@ -35,6 +35,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 		super(new AntPathRequestMatcher(defaultFilterProcessesUrl, httpMethod));
 		// The filter requires that you set the authenticationManager property.
 		setAuthenticationManager(authenticationManager);
+		
+		tokenService = new JWTTokenService();
 	}
 
 	@Override
@@ -54,9 +56,9 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-		String compactJWT = Jwts.builder().setSubject(authResult.getName()).signWith(SignatureAlgorithm.HS256, "secret")
-				.compact();
-
+		// If Authentication was successful a JWT Token will be created and returned
+		String compactJWT = tokenService.createToken(authResult.getName());
+				
 		response.setContentType("application/json");
 
 		JSONObject jsonObject = new JSONObject();

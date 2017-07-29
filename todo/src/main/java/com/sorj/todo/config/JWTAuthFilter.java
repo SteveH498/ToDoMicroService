@@ -18,7 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.jsonwebtoken.Jwts;
+import com.sorj.todo.util.JWTTokenService;
 
 public class JWTAuthFilter extends OncePerRequestFilter {
 
@@ -28,20 +28,31 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		String token = request.getHeader("Authentication");
+		// Authorization: Bearer
+		// eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdGV2ZSJ9.Er6MxeZtN_I051Cq1WG3VLztGyE12f6rVRUcgMdfvVQ
+		String authHeader = request.getHeader("Authorization");
+
+		if (!authHeader.toLowerCase().startsWith("bearer")) {
+			throw new SecurityException();
+		}
+
+		String token = authHeader.split(" ")[1];
 
 		log.info("Found Token: " + token);
 
 		try {
 
-			String userName = Jwts.parser().setSigningKey("secret").parseClaimsJws(token).getBody().getSubject();
+			JWTTokenService tokenService = new JWTTokenService();
+			String userName = tokenService.getTokenSubject(token);
 
 			log.info("User Name: " + userName);
 
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 			grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
-
 			Authentication auth = new UsernamePasswordAuthenticationToken(userName, null, grantedAuthorities);
+			
+			// Once the request has been authenticated, the Authentication will usually be stored in a thread-local
+			// SecurityContext managed by the SecurityContextHolder by the authentication mechanism which is being used.
 			SecurityContextHolder.getContext().setAuthentication(auth);
 
 			filterChain.doFilter(request, response);
