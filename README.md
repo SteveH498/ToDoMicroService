@@ -39,3 +39,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdGV2ZSJ9.Er6MxeZtN_I051Cq
 	"todo": "ToDo message"
 }
 ```
+
+Deployment on Cloud Foundry
+
+```
+cf create-service postgresql v9.4-dev todo_postgresql
+cf bind-service todo-service todo_postgresql
+cf restage todo-service
+```
