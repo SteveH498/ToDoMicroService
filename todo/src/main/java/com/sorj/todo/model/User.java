@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 
@@ -15,17 +17,16 @@ public class User {
 	private Long id;
 
 	private String userName;
-	
+
 	private String lastName;
 
+	private String firstName;
+
+	@JsonIgnore
 	private String password;
 
-	private String firstName;
-	
 	@OneToMany
 	private List<ToDo> todos;
-	
-	
 
 	public Long getId() {
 		return id;
@@ -74,6 +75,5 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
 
 }

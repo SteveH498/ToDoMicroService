@@ -32,7 +32,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 		// eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdGV2ZSJ9.Er6MxeZtN_I051Cq1WG3VLztGyE12f6rVRUcgMdfvVQ
 		String authHeader = request.getHeader("Authorization");
 
-		if (!authHeader.toLowerCase().startsWith("bearer")) {
+		if (authHeader == null || !authHeader.toLowerCase().startsWith("bearer")) {
 			throw new SecurityException();
 		}
 
