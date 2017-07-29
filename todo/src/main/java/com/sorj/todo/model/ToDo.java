@@ -2,6 +2,7 @@ package com.sorj.todo.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -9,11 +10,11 @@ import javax.persistence.ManyToOne;
 public class ToDo {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	private User createdBy;
+	private ToDoUser createdBy;
 
 	private String todo;
 
@@ -25,11 +26,11 @@ public class ToDo {
 		this.id = id;
 	}
 
-	public User getCreatedBy() {
+	public ToDoUser getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(User createdBy) {
+	public void setCreatedBy(ToDoUser createdBy) {
 		this.createdBy = createdBy;
 	}
 

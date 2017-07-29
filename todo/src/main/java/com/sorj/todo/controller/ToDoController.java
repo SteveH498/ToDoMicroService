@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sorj.todo.config.JWTLoginFilter;
 import com.sorj.todo.model.ToDo;
-import com.sorj.todo.model.User;
+import com.sorj.todo.model.ToDoUser;
 import com.sorj.todo.repositories.ToDoCrudRepository;
 import com.sorj.todo.repositories.UserCrudRepository;
 
@@ -43,12 +43,23 @@ public class ToDoController {
 		return new ResponseEntity<List<ToDo>>(todos, HttpStatus.OK);
 	}
 
+	@PostMapping(path = "/user")
+	public ResponseEntity<ToDoUser> createUser(@RequestBody ToDoUser newUser) {
+		log.info("Create new User");
+		log.info("User name: " + newUser.getUserName());
+		log.info("User password: " + newUser.getPassword());
+
+		ToDoUser createdUser = userCrudRepository.save(newUser);
+
+		return new ResponseEntity<ToDoUser>(createdUser, HttpStatus.CREATED);
+	}
+
 	@PostMapping(path = "/todo")
 	public ResponseEntity<ToDo> addToDo(@RequestBody ToDo todo) {
 
 		String userName = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		User createdByUser = userCrudRepository.findByUserName(userName);
+		ToDoUser createdByUser = userCrudRepository.findByUserName(userName);
 
 		todo.setCreatedBy(createdByUser);
 

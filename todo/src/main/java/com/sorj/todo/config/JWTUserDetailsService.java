@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.sorj.todo.model.User;
+import com.sorj.todo.model.ToDoUser;
 import com.sorj.todo.repositories.UserCrudRepository;
 
 @Service
@@ -23,7 +23,7 @@ public class JWTUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		User user = userRepositoy.findByUserName(username);
+		ToDoUser user = userRepositoy.findByUserName(username);
 		if (user == null || user.getUserName() == null) {
 			throw new UsernameNotFoundException("Invalid user");
 		}
